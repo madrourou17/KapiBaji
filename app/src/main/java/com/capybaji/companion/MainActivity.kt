@@ -75,7 +75,7 @@ fun CapyBajiScreen(mqttClient: MqttBadgeClient) {
     var showSettingsDialog by remember { mutableStateOf(false) }
     var connectTrigger by remember { mutableIntStateOf(0) }
 
-    var selectedMood by remember { mutableStateOf(CapyMood.CHILL) }
+    var selectedMood by remember { mutableStateOf(CapyMood.NEUTRAL) }
     var noteText by remember { mutableStateOf("") }
     var senderName by remember { mutableStateOf(settings.senderName) }
     var isConnected by remember { mutableStateOf(false) }
@@ -105,7 +105,7 @@ fun CapyBajiScreen(mqttClient: MqttBadgeClient) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("卡皮吧唧 · 心情遥控端", fontWeight = FontWeight.Bold) },
+                title = { Text("卡皮吧唧 · Otto 心情遥控", fontWeight = FontWeight.Bold) },
                 actions = {
                     TextButton(onClick = { showSettingsDialog = true }) {
                         Text("MQTT配置")
@@ -136,25 +136,26 @@ fun CapyBajiScreen(mqttClient: MqttBadgeClient) {
                 }
             }
 
-            Text("1. 选择要传给吧唧的卡皮巴拉心情", fontWeight = FontWeight.SemiBold)
+            Text("1. 选择 Otto 动态 GIF 表情（21 款）", fontWeight = FontWeight.SemiBold)
 
             LazyVerticalGrid(
-                columns = GridCells.Fixed(2),
+                columns = GridCells.Fixed(3),
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
-                modifier = Modifier.height(220.dp)
+                modifier = Modifier.height(276.dp)
             ) {
                 items(CapyMood.entries) { mood ->
                     val active = mood == selectedMood
                     FilledTonalButton(
                         onClick = { selectedMood = mood },
+                        contentPadding = PaddingValues(horizontal = 8.dp, vertical = 6.dp),
                         colors = ButtonDefaults.filledTonalButtonColors(
                             containerColor = if (active) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surfaceVariant
                         )
                     ) {
-                        Column {
-                            Text(mood.labelZh, fontWeight = FontWeight.Bold)
-                            Text(mood.hint, style = MaterialTheme.typography.labelSmall)
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Text(mood.labelZh, fontWeight = FontWeight.Bold, maxLines = 1)
+                            Text(mood.hint, style = MaterialTheme.typography.labelSmall, maxLines = 1)
                         }
                     }
                 }
